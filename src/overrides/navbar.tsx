@@ -21,8 +21,6 @@ const NAV_LINKS = [
   { name: 'Home', href: '/' },
   { name: 'Properties', href: '/listings' },
   { name: 'About', href: '/about' },
-  { name: 'Agent', href: '/team' },
-  { name: 'Blog', href: '/blog' },
 ] as const
 
 export function NavbarOverride() {
