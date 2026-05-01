@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import { SITE_CONFIG } from '@/lib/site-config'
 
 export const FOOTER_OVERRIDE_ENABLED = true
@@ -16,8 +16,6 @@ const COLUMNS = [
     heading: 'Company',
     links: [
       { name: 'About', href: '/about' },
-      { name: 'Agents', href: '/team' },
-      { name: 'Blog', href: '/blog' },
       { name: 'Careers', href: '/careers' },
     ],
   },
@@ -52,8 +50,8 @@ export function FooterOverride() {
               <span className="text-lg font-semibold text-slate-900">{SITE_CONFIG.name}</span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-7 text-slate-600">
-              Discover, list, and connect on {SITE_CONFIG.name} — a clean property listing platform built for buyers,
-              sellers, and agents.
+              Discover, list, and connect on {SITE_CONFIG.name} - a clean property listing platform built for buyers,
+              sellers, and local businesses.
             </p>
           </div>
 

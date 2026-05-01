@@ -1,4 +1,4 @@
-import { ArrowRight, Building2, Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
+﻿import { ArrowRight, Building2, Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { SITE_CONFIG } from '@/lib/site-config'
@@ -9,11 +9,11 @@ const CONTACT_LANES = [
   {
     icon: Building2,
     title: 'List a property',
-    body: 'Sellers and agents — get your property in front of qualified buyers within 24 hours.',
+    body: 'Sellers and businesses - get your property in front of qualified buyers within 24 hours.',
   },
   {
     icon: MessageCircle,
-    title: 'Speak with an agent',
+    title: 'Speak with support',
     body: 'Looking for the right home? Our local specialists will walk you through every step.',
   },
   {
@@ -23,14 +23,21 @@ const CONTACT_LANES = [
   },
 ] as const
 
-const QUICK_INFO = [
+const QUICK_INFO_BASE = [
   { icon: Phone, label: 'Call us', value: '+1 (415) 555-0184' },
-  { icon: Mail, label: 'Email', value: `hello@${SITE_CONFIG.domain}` },
   { icon: MapPin, label: 'Office', value: '124 Silver Lake Trail, Aspen' },
-  { icon: Clock, label: 'Hours', value: 'Mon – Sat, 9am – 7pm' },
+  { icon: Clock, label: 'Hours', value: 'Mon - Sat, 9am - 7pm' },
 ] as const
 
 export function ContactPageOverride() {
+  const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || `hello@${SITE_CONFIG.domain}`
+  const quickInfo = [
+    QUICK_INFO_BASE[0],
+    { icon: Mail, label: 'Email', value: contactEmail },
+    QUICK_INFO_BASE[1],
+    QUICK_INFO_BASE[2],
+  ] as const
+
   return (
     <div className="min-h-screen bg-[#f4f6f8] text-slate-900">
       <NavbarShell />
@@ -39,12 +46,20 @@ export function ContactPageOverride() {
           <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
             <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-sky-700">Get in touch</p>
             <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-              Talk to a {SITE_CONFIG.name} property specialist
+              Talk to a {SITE_CONFIG.name} specialist
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-              Whether you&apos;re buying your first home, selling an estate, or scaling a portfolio, our team is here
+              Whether you are buying your first home, selling an estate, or scaling a portfolio, our team is here
               to make every step calm and clear.
             </p>
+            <div className="mt-6">
+              <a
+                href={`mailto:${contactEmail}`}
+                className="inline-flex h-11 items-center justify-center rounded-full bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800"
+              >
+                Email us: {contactEmail}
+              </a>
+            </div>
           </div>
         </section>
 
@@ -65,7 +80,7 @@ export function ContactPageOverride() {
               ))}
 
               <div className="grid gap-3 sm:grid-cols-2">
-                {QUICK_INFO.map((item) => (
+                {quickInfo.map((item) => (
                   <div
                     key={item.label}
                     className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
@@ -85,7 +100,13 @@ export function ContactPageOverride() {
             <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
               <h2 className="text-2xl font-bold tracking-tight">Send us a message</h2>
               <p className="mt-2 text-sm text-slate-600">
-                Share a few details and we&apos;ll get back within one business day.
+                Share a few details and we will get back within one business day.
+              </p>
+              <p className="mt-2 text-sm text-slate-600">
+                Prefer direct email?{' '}
+                <a href={`mailto:${contactEmail}`} className="font-semibold underline underline-offset-4">
+                  {contactEmail}
+                </a>
               </p>
               <form className="mt-6 grid gap-4">
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -107,12 +128,12 @@ export function ContactPageOverride() {
                   </label>
                 </div>
                 <label className="grid gap-2 text-sm">
-                  <span className="font-medium text-slate-700">I&apos;m interested in</span>
+                  <span className="font-medium text-slate-700">I am interested in</span>
                   <select className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10">
                     <option>Buying a property</option>
                     <option>Selling a property</option>
                     <option>Renting a property</option>
-                    <option>Working with an agent</option>
+                    <option>Working with support</option>
                     <option>Something else</option>
                   </select>
                 </label>
