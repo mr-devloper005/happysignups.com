@@ -108,23 +108,7 @@ export default function TermsPage() {
                   </section>
                 ))}
 
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
-                  <div className="flex items-center gap-3">
-                    <FileText className="h-5 w-5 text-slate-700" />
-                    <h3 className="text-base font-semibold">Need to talk to us?</h3>
-                  </div>
-                  <p className="mt-2 text-sm text-slate-600">
-                    For questions about these Terms or any legal matter, get in touch with our team.
-                  </p>
-                  <Link
-                    href={`mailto:legal@${SITE_CONFIG.domain}`}
-                    className="mt-4 inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
-                  >
-                    <Mail className="h-4 w-4" />
-                    legal@{SITE_CONFIG.domain}
-                  </Link>
-                </div>
-              </div>
+                              </div>
             </div>
           </div>
         </section>

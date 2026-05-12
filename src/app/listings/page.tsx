@@ -37,16 +37,25 @@ export const generateMetadata = () =>
 
 const PROPERTY_FILTERS = [
   { label: 'All', slug: 'all' },
-  { label: 'Villas', slug: 'villas' },
-  { label: 'Apartments', slug: 'apartments' },
-  { label: 'Duplex Homes', slug: 'duplex-homes' },
-  { label: 'Urban Loft', slug: 'urban-loft' },
-  { label: 'Coastal Retreat', slug: 'coastal-retreat' },
-  { label: 'Penthouse', slug: 'penthouse' },
-  { label: 'Eco-Smart Home', slug: 'eco-smart-home' },
-  { label: 'Urban Condos', slug: 'urban-condos' },
-  { label: 'Historic Estates', slug: 'historic-estates' },
-  { label: 'Studio Apartments', slug: 'studio-apartments' },
+  { label: 'Business', slug: 'business' },
+  { label: 'Health', slug: 'health' },
+  { label: 'Technology', slug: 'technology' },
+  { label: 'Real Estate', slug: 'real-estate' },
+  { label: 'Home Improvement', slug: 'home-improvement' },
+  { label: 'Automotive', slug: 'automotive' },
+  { label: 'Travel', slug: 'travel' },
+  { label: 'Blog', slug: 'blog' },
+  { label: 'Shopping', slug: 'shopping' },
+  { label: 'Service', slug: 'service' },
+  { label: 'Lifestyle', slug: 'lifestyle' },
+  { label: 'Beauty', slug: 'beauty' },
+  { label: 'Pet & Animal', slug: 'pet-animal' },
+  { label: 'Food', slug: 'food' },
+  { label: 'Furniture', slug: 'furniture' },
+  { label: 'Electric', slug: 'electric' },
+  { label: 'Jobs & Payroll', slug: 'jobs-payroll' },
+  { label: 'Finance', slug: 'finance' },
+  { label: 'Crypto', slug: 'crypto' },
 ] as const
 
 const PRICE_RANGES = ['Any price', 'Under $500K', '$500K – $1M', '$1M – $3M', '$3M – $5M', '$5M+']
@@ -192,21 +201,13 @@ function PropertyCard({
   href,
   image,
   title,
-  price,
   location,
-  sqft,
-  beds,
-  baths,
   tag,
 }: {
   href: string
   image: string
   title: string
-  price: string
   location: string
-  sqft: string
-  beds: number
-  baths: number
   tag?: string
 }) {
   return (
@@ -228,25 +229,10 @@ function PropertyCard({
           </button>
         </div>
         <div className="p-5">
-          <p className="text-2xl font-bold text-slate-900">{price}</p>
-          <h3 className="mt-2 line-clamp-2 text-base font-semibold text-slate-900">{title}</h3>
+          <h3 className="line-clamp-2 text-base font-semibold text-slate-900">{title}</h3>
           <div className="mt-2 flex items-center gap-1.5 text-sm text-slate-500">
             <MapPin className="h-3.5 w-3.5" />
             <span className="truncate">{location}</span>
-          </div>
-          <div className="mt-4 flex flex-wrap items-center gap-4 border-t border-slate-100 pt-4 text-[12px] font-medium text-slate-600">
-            <span className="inline-flex items-center gap-1.5">
-              <Maximize2 className="h-3.5 w-3.5 text-slate-400" />
-              {sqft} sq.ft
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <BedDouble className="h-3.5 w-3.5 text-slate-400" />
-              {beds} bed
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Bath className="h-3.5 w-3.5 text-slate-400" />
-              {baths} bath
-            </span>
           </div>
         </div>
       </Link>
@@ -257,10 +243,11 @@ function PropertyCard({
 export default async function ListingsPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ category?: string }>
+  searchParams?: Promise<{ category?: string; search?: string }>
 }) {
   const params = (await searchParams) || {}
   const requestedCategory = params.category ? normalizeCategory(params.category) : 'all'
+  const searchQuery = params.search || ''
 
   const remotePosts = await fetchTaskPosts('listing', 30).catch(() => [] as SitePost[])
 
@@ -272,21 +259,26 @@ export default async function ListingsPage({
     merged.push(post)
   }
 
-  const filtered =
-    requestedCategory === 'all'
-      ? merged.filter((post) => {
-          const content = post.content && typeof post.content === 'object' ? post.content : {}
-          const value = typeof (content as any).category === 'string' ? (content as any).category : ''
-          return !value || isValidCategory(value)
-        })
-      : merged.filter((post) => {
-          const content = post.content && typeof post.content === 'object' ? post.content : {}
-          const value =
-            typeof (content as any).category === 'string'
-              ? normalizeCategory((content as any).category)
-              : ''
-          return value === requestedCategory
-        })
+  const filtered = merged.filter((post) => {
+    const content = post.content && typeof post.content === 'object' ? post.content : {}
+    const category = typeof (content as any).category === 'string' ? (content as any).category : ''
+    const title = post.title?.toLowerCase() || ''
+    const location = typeof content.location === 'string' ? content.location.toLowerCase() : ''
+    const address = typeof content.address === 'string' ? content.address.toLowerCase() : ''
+    
+    // Category filter
+    const categoryMatch = requestedCategory === 'all' || 
+      (!category && requestedCategory === 'all') || 
+      (category && normalizeCategory(category) === requestedCategory)
+    
+    // Search filter
+    const searchMatch = !searchQuery || 
+      title.includes(searchQuery.toLowerCase()) ||
+      location.includes(searchQuery.toLowerCase()) ||
+      address.includes(searchQuery.toLowerCase())
+    
+    return categoryMatch && searchMatch && (!category || isValidCategory(category))
+  })
 
   const fromPosts = filtered.map((post) => {
     const d = getPostDetails(post)
@@ -365,15 +357,19 @@ export default async function ListingsPage({
                 </p>
 
                 {/* Search bar */}
-                <form action="/search" method="get" className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <form action="/listings" method="get" className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <div className="flex h-14 flex-1 items-center gap-3 rounded-full bg-white px-5 shadow-sm ring-1 ring-slate-200">
                     <Search className="h-5 w-5 text-slate-400" />
                     <input
-                      name="q"
+                      name="search"
                       type="text"
                       placeholder="City, neighborhood, ZIP, or property type"
+                      defaultValue={searchQuery}
                       className="h-full flex-1 bg-transparent text-sm text-slate-700 outline-none placeholder:text-slate-400"
                     />
+                    {requestedCategory !== 'all' && (
+                      <input type="hidden" name="category" value={requestedCategory} />
+                    )}
                   </div>
                   <button
                     type="submit"
@@ -439,21 +435,6 @@ export default async function ListingsPage({
                     <MapPin className="h-4 w-4" />
                     {featured.location}
                   </div>
-                  <p className="mt-6 text-4xl font-bold tracking-tight text-slate-900">{featured.price}</p>
-                  <div className="mt-5 flex flex-wrap gap-6 text-sm text-slate-700">
-                    <span className="inline-flex items-center gap-2">
-                      <Maximize2 className="h-4 w-4 text-slate-400" />
-                      {featured.sqft} sq.ft
-                    </span>
-                    <span className="inline-flex items-center gap-2">
-                      <BedDouble className="h-4 w-4 text-slate-400" />
-                      {featured.beds} bedrooms
-                    </span>
-                    <span className="inline-flex items-center gap-2">
-                      <Bath className="h-4 w-4 text-slate-400" />
-                      {featured.baths} bathrooms
-                    </span>
-                  </div>
                   <div className="mt-8 flex flex-wrap gap-3">
                     <Link
                       href={featured.href}
@@ -483,33 +464,6 @@ export default async function ListingsPage({
                 <SlidersHorizontal className="h-3.5 w-3.5" />
                 Refine
               </span>
-              <select
-                aria-label="Price range"
-                className="h-10 rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-700 outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
-                defaultValue={PRICE_RANGES[0]}
-              >
-                {PRICE_RANGES.map((p) => (
-                  <option key={p}>{p}</option>
-                ))}
-              </select>
-              <select
-                aria-label="Bedrooms"
-                className="h-10 rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-700 outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
-                defaultValue={BED_OPTIONS[0]}
-              >
-                {BED_OPTIONS.map((b) => (
-                  <option key={b}>{b} beds</option>
-                ))}
-              </select>
-              <select
-                aria-label="Sort"
-                className="h-10 rounded-full border border-slate-200 bg-white px-4 text-sm text-slate-700 outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
-                defaultValue={SORT_OPTIONS[0]}
-              >
-                {SORT_OPTIONS.map((s) => (
-                  <option key={s}>{s}</option>
-                ))}
-              </select>
               <div className="ml-auto inline-flex rounded-full border border-slate-200 bg-slate-50 p-1">
                 <button
                   type="button"
@@ -531,7 +485,9 @@ export default async function ListingsPage({
             <div className="mt-5 flex flex-wrap items-center gap-2">
               {PROPERTY_FILTERS.map((f) => {
                 const isActive = requestedCategory === f.slug || (f.slug === 'all' && requestedCategory === 'all')
-                const href = f.slug === 'all' ? '/listings' : `/listings?category=${f.slug}`
+                const href = f.slug === 'all' 
+                  ? (searchQuery ? `/listings?search=${encodeURIComponent(searchQuery)}` : '/listings')
+                  : `/listings?category=${f.slug}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`
                 return (
                   <Link
                     key={f.slug}
@@ -546,6 +502,14 @@ export default async function ListingsPage({
                   </Link>
                 )
               })}
+              {requestedCategory !== 'all' && (
+                <Link
+                  href={searchQuery ? `/listings?search=${encodeURIComponent(searchQuery)}` : '/listings'}
+                  className="rounded-full bg-red-100 px-4 py-2 text-xs font-semibold text-red-600 hover:bg-red-200"
+                >
+                  Clear Filters
+                </Link>
+              )}
             </div>
           </div>
         </section>
@@ -557,14 +521,19 @@ export default async function ListingsPage({
               <h2 className="text-3xl font-bold tracking-tight">Browse properties</h2>
               <p className="mt-1 text-sm text-slate-600">
                 Showing <span className="font-semibold text-slate-900">{grid.length}</span> {grid.length === 1 ? 'property' : 'properties'}
-                {requestedCategory !== 'all' ? (
+                {searchQuery && (
+                  <>
+                    {' '}for <span className="font-semibold text-slate-900">"{searchQuery}"</span>
+                  </>
+                )}
+                {requestedCategory !== 'all' && (
                   <>
                     {' '}in{' '}
                     <span className="font-semibold text-slate-900">
                       {PROPERTY_FILTERS.find((f) => f.slug === requestedCategory)?.label || requestedCategory}
                     </span>
                   </>
-                ) : null}
+                )}
               </p>
             </div>
             <Link
@@ -587,11 +556,7 @@ export default async function ListingsPage({
                   href={p.href}
                   image={p.image}
                   title={p.title}
-                  price={p.price}
                   location={p.location}
-                  sqft={p.sqft}
-                  beds={p.beds}
-                  baths={p.baths}
                   tag={p.tag}
                 />
               ))}

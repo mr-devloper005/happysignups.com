@@ -140,6 +140,11 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
                     <option key={item.slug} value={item.slug}>{item.name}</option>
                   ))}
                 </select>
+                {normalizedCategory !== 'all' && (
+                  <Link href={taskConfig?.route || '#'} className={`mt-2 inline-flex h-11 items-center justify-center rounded-xl px-4 text-sm font-medium ${ui.button} bg-gray-100 hover:bg-gray-200 text-gray-700 w-full`}>
+                    Clear Filters
+                  </Link>
+                )}
               </div>
               <button type="submit" className={`h-11 rounded-xl text-sm font-medium ${ui.button}`}>Apply filters</button>
             </form>
@@ -164,6 +169,11 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
                   ))}
                 </select>
                 <button type="submit" className={`h-11 rounded-xl px-4 text-sm font-medium ${ui.button}`}>Apply</button>
+                {normalizedCategory !== 'all' && (
+                  <Link href={taskConfig?.route || '#'} className={`h-11 rounded-xl px-4 text-sm font-medium ${ui.button} bg-gray-100 hover:bg-gray-200 text-gray-700`}>
+                    Clear Filters
+                  </Link>
+                )}
               </form>
             </div>
           </section>
@@ -232,6 +242,11 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
                   ))}
                 </select>
                 <button type="submit" className={`h-11 rounded-xl px-4 text-sm font-medium ${ui.button}`}>Apply</button>
+                {normalizedCategory !== 'all' && (
+                  <Link href={taskConfig?.route || '#'} className={`h-11 rounded-xl px-4 text-sm font-medium ${ui.button} bg-gray-100 hover:bg-gray-200 text-gray-700`}>
+                    Clear Filters
+                  </Link>
+                )}
               </form>
             </div>
           </section>

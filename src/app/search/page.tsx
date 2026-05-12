@@ -65,13 +65,25 @@ export default async function SearchPage({
   const results = normalized.length > 0 ? filtered : filtered.slice(0, 24)
 
   const QUICK_CATEGORIES = [
-    'Villas',
-    'Apartments',
-    'Duplex Homes',
-    'Urban Loft',
-    'Coastal Retreat',
-    'Penthouse',
-    'Eco-Smart Home',
+    'Business',
+    'Health', 
+    'Technology',
+    'Real Estate',
+    'Home Improvement',
+    'Automotive',
+    'Travel',
+    'Blog',
+    'Shopping',
+    'Service',
+    'Lifestyle',
+    'Beauty',
+    'Pet & Animal',
+    'Food',
+    'Furniture',
+    'Electric',
+    'Jobs & Payroll',
+    'Finance',
+    'Crypto',
   ]
 
   return (
@@ -143,6 +155,14 @@ export default async function SearchPage({
                   </Link>
                 )
               })}
+              {category && (
+                <Link
+                  href={query ? `/search?q=${encodeURIComponent(query)}&master=1` : '/search?master=1'}
+                  className="rounded-full bg-red-100 px-4 py-2 text-xs font-semibold text-red-600 ring-1 ring-red-200 hover:bg-red-200"
+                >
+                  Clear Filters
+                </Link>
+              )}
             </div>
           </div>
         </section>

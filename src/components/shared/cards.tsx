@@ -186,7 +186,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
               <MapPin className="h-3 w-3" />
               {listing.location}
             </div>
-            <div className="flex items-center justify-between">
+            <div className="mb-3 flex items-center justify-between">
               <div className="flex flex-wrap gap-1">
                 {listing.tags.slice(0, 2).map((tag) => (
                   <Badge key={tag} variant="outline" className="text-xs">
@@ -198,9 +198,6 @@ export function ListingCard({ listing }: { listing: Listing }) {
                 {listing.isVerified && (
                   <BadgeCheck className="h-4 w-4 text-accent" />
                 )}
-                <span className="text-sm font-medium">
-                  {listing.priceRange || (listing.price && `$${listing.price}/mo`)}
-                </span>
               </div>
             </div>
           </CardContent>
@@ -264,9 +261,6 @@ export function ClassifiedAdCard({ ad }: { ad: ClassifiedAd }) {
             <h3 className="mb-1 line-clamp-2 font-semibold text-foreground">
               {ad.title}
             </h3>
-            <p className="mb-3 text-xl font-bold text-foreground">
-              ${ad.price.toLocaleString()}
-            </p>
             <div className="flex items-center justify-between text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 <MapPin className="h-3 w-3" />
