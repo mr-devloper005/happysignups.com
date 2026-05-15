@@ -24,8 +24,6 @@ const CONTACT_LANES = [
 ] as const
 
 const QUICK_INFO_BASE = [
-  { icon: Phone, label: 'Call us', value: '+1 (415) 555-0184' },
-  { icon: MapPin, label: 'Office', value: '124 Silver Lake Trail, Aspen' },
   { icon: Clock, label: 'Hours', value: 'Mon - Sat, 9am - 7pm' },
 ] as const
 
@@ -33,9 +31,6 @@ export function ContactPageOverride() {
   const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || `hello@${SITE_CONFIG.domain}`
   const quickInfo = [
     QUICK_INFO_BASE[0],
-    { icon: Mail, label: 'Email', value: contactEmail },
-    QUICK_INFO_BASE[1],
-    QUICK_INFO_BASE[2],
   ] as const
 
   return (
@@ -52,15 +47,7 @@ export function ContactPageOverride() {
               Whether you are buying your first home, selling an estate, or scaling a portfolio, our team is here
               to make every step calm and clear.
             </p>
-            <div className="mt-6">
-              <a
-                href={`mailto:${contactEmail}`}
-                className="inline-flex h-11 items-center justify-center rounded-full bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800"
-              >
-                Email us: {contactEmail}
-              </a>
-            </div>
-          </div>
+                      </div>
         </section>
 
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -102,13 +89,7 @@ export function ContactPageOverride() {
               <p className="mt-2 text-sm text-slate-600">
                 Share a few details and we will get back within one business day.
               </p>
-              <p className="mt-2 text-sm text-slate-600">
-                Prefer direct email?{' '}
-                <a href={`mailto:${contactEmail}`} className="font-semibold underline underline-offset-4">
-                  {contactEmail}
-                </a>
-              </p>
-              <form className="mt-6 grid gap-4">
+                            <form className="mt-6 grid gap-4">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="grid gap-2 text-sm">
                     <span className="font-medium text-slate-700">Full name</span>
@@ -116,14 +97,6 @@ export function ContactPageOverride() {
                       type="text"
                       className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
                       placeholder="Jane Doe"
-                    />
-                  </label>
-                  <label className="grid gap-2 text-sm">
-                    <span className="font-medium text-slate-700">Email address</span>
-                    <input
-                      type="email"
-                      className="h-12 rounded-xl border border-slate-200 bg-white px-4 text-sm outline-none focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
-                      placeholder="you@example.com"
                     />
                   </label>
                 </div>

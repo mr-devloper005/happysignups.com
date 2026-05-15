@@ -47,6 +47,8 @@ const MILESTONES = [
   { year: '2025', title: '40 cities and growing', body: 'Now serving buyers, sellers, and renters across 40 metro areas.' },
 ]
 
+const ABOUT_STORY_IMAGE = '/about-story.svg'
+
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#f4f6f8] text-slate-900">
@@ -82,7 +84,7 @@ export default function AboutPage() {
           <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
             <div className="relative h-96 overflow-hidden rounded-3xl shadow-xl">
               <ContentImage
-                src="/placeholder.svg?height=900&width=1400"
+                src={ABOUT_STORY_IMAGE}
                 alt="Modern home interior"
                 fill
                 className="object-cover"
@@ -109,12 +111,6 @@ export default function AboutPage() {
                 >
                   Browse properties
                   <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/team"
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 ring-1 ring-slate-200 hover:bg-slate-50"
-                >
-                  Meet the team
                 </Link>
               </div>
             </div>

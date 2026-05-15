@@ -168,22 +168,6 @@ export default function HelpPage() {
                 Real people, fast responses. Available Monday through Saturday, 9am – 7pm.
               </p>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800"
-              >
-                <MessageCircle className="h-4 w-4" />
-                Send a message
-              </Link>
-              <a
-                href="tel:+14155550184"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 ring-1 ring-slate-200 hover:bg-slate-50"
-              >
-                <Phone className="h-4 w-4" />
-                +1 (415) 555-0184
-              </a>
-            </div>
           </div>
         </section>
       </main>
