@@ -18,23 +18,6 @@ export const CATEGORY_OPTIONS: Array<{ name: string; slug: string }> = [
   { name: "Jobs & Payroll", slug: "jobs-payroll" },
   { name: "Finance", slug: "finance" },
   { name: "Crypto", slug: "crypto" },
-  { name: "Casino", slug: "casino" },
-  { name: "CBD", slug: "cbd" },
-  { name: "Social Media", slug: "social-media" },
-  { name: "Game & Sports", slug: "game-sports" },
-  { name: "Arts", slug: "arts" },
-  { name: "Entertainment", slug: "entertainment" },
-  { name: "Shipping & Transportation", slug: "shipping-transportation" },
-  { name: "Education", slug: "education" },
-  { name: "Family & Parenting", slug: "family-parenting" },
-  { name: "Law & Legal", slug: "law-legal" },
-  { name: "Fashion", slug: "fashion" },
-  { name: "Photography", slug: "photography" },
-  { name: "Adult", slug: "adult" },
-  { name: "Event", slug: "event" },
-  { name: "Digital", slug: "digital" },
-  { name: "News", slug: "news" },
-  { name: "Industry & Manufacturing", slug: "industry-manufacturing" },
 ];
 
 const allowed = new Set(
