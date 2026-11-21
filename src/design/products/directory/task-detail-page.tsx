@@ -160,15 +160,6 @@ export function DirectoryTaskDetailPage({
 
             {images.length > 0 ? <PhotoLightboxGrid images={images} title={post.title} /> : null}
 
-            {mapEmbedUrl ? (
-              <div className="mt-5 overflow-hidden rounded-lg border border-slate-300">
-                <div className="flex items-center justify-between bg-slate-900 px-3 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-white">
-                  <span>Get Directions</span>
-                  <span>View Larger Map</span>
-                </div>
-                <iframe src={mapEmbedUrl} title={`${post.title} map`} className="h-[300px] w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
-              </div>
-            ) : null}
           </div>
         </section>
 
